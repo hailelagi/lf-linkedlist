@@ -1,3 +1,7 @@
+pub mod first;
+pub mod weird_lists;
+
+
 fn main() {
-    println!("Hello, world!");
+    println!("lists-lists-lists!!!")
 }
