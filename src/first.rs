@@ -7,7 +7,6 @@
 * numa-awareness
 // [node, ptr] -> [node, ptr] -> [node, ptr] -> [node, ptr]
 **/
-
 /* list.rs
 pub enum List {
     Empty,
@@ -22,10 +21,7 @@ pub enum TwoList {
     ElemThenNotEmpty(i32, Box<List>),
 }
 */
-
-pub struct List {
-    head: Link,
-}
+use std::mem;
 
 enum Link {
     Empty,
@@ -35,4 +31,64 @@ enum Link {
 struct Node {
     elem: i32,
     next: Link,
+}
+
+pub struct List {
+    head: Link,
+}
+
+impl List {
+    fn new() -> Self {
+        List { head: Link::Empty }
+    }
+
+    fn push(&mut self, elem: i32) {
+        let new_node = Box::new(Node {
+            elem: elem,
+            next: mem::replace(&mut self.head, Link::Empty),
+        });
+        self.head = Link::More(new_node);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_new_list() {
+        let list = List::new();
+        assert!(matches!(list, List { head: Link::Empty }));
+    }
+
+    #[test]
+    fn test_push_list() {
+        let mut list = List::new();
+        list.push(1);
+        list.push(2);
+        list.push(3);
+        list.push(4);
+
+        if let Link::More(node) = &list.head {
+            assert_eq!(node.elem, 4);
+            if let Link::More(node) = &node.next {
+                assert_eq!(node.elem, 3);
+                if let Link::More(node) = &node.next {
+                    assert_eq!(node.elem, 2);
+                    if let Link::More(node) = &node.next {
+                        assert_eq!(node.elem, 1);
+                        assert!(matches!(node.next, Link::Empty));
+                    } else {
+                        panic!("Expected node with elem 1");
+                    }
+                } else {
+                    panic!("Expected node with elem 2");
+                }
+            } else {
+                panic!("Expected node with elem 3");
+            }
+        } else {
+            panic!("Expected node with elem 4");
+        }
+    }
 }
