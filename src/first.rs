@@ -23,37 +23,42 @@ pub enum TwoList {
 */
 use std::mem;
 
+#[derive(Debug, Default)]
 enum Link {
+    #[default]
     Empty,
     More(Box<Node>),
 }
-
+ 
+#[derive(Debug)]
 struct Node {
     elem: i32,
     next: Link,
 }
 
+#[derive(Debug)]
 pub struct List {
     head: Link,
 }
 
 impl List {
-    fn new() -> Self {
+    pub fn new() -> Self {
         List { head: Link::Empty }
     }
 
-    fn peek(&self) -> Option<i32> {
+    pub fn peek(&self) -> Option<i32> {
         match &self.head {
             Link::Empty => None,
             Link::More(item) => Some(item.elem)
         }
     }
 
-    fn push(&mut self, elem: i32) {
+    pub fn push(&mut self, elem: i32) {
         let new_node = Box::new(Node {
             elem: elem,
-            next: mem::replace(&mut self.head, Link::Empty),
+            next: mem::take(&mut self.head),
         });
+
         self.head = Link::More(new_node);
     }
 
