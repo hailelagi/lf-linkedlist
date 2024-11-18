@@ -1,5 +1,5 @@
 //! Persistent Linked List
-//! 
+//!
 
 pub struct List<T> {
     head: Link<T>,
