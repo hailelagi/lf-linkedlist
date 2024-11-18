@@ -1,4 +1,5 @@
-use std::mem;
+//! Linked list
+//!
 
 pub struct List {
     head: Link,
@@ -19,14 +20,14 @@ impl List {
     pub fn push(&mut self, elem: i32) {
         let new_node = Box::new(Node {
             elem: elem,
-            next: mem::take(&mut self.head),
+            next: self.head.take(),
         });
 
         self.head = Link::Some(new_node);
     }
 
     pub fn pop(&mut self) -> Option<i32> {
-        match mem::take(&mut self.head) {
+        match self.head.take() {
             Link::None => None,
             Link::Some(node) => {
                 self.head = node.next;
@@ -38,10 +39,10 @@ impl List {
 
 impl Drop for List {
     fn drop(&mut self) {
-        let mut cur_link = mem::take(&mut self.head);
+        let mut cur_link = self.head.take();
 
         while let Link::Some(mut boxed_node) = cur_link {
-            cur_link = mem::take(&mut boxed_node.next);
+            cur_link = boxed_node.next.take();
         }
     }
 }
