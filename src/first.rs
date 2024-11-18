@@ -29,12 +29,55 @@ enum Link {
     Empty,
     More(Box<Node>),
 }
- 
+
 #[derive(Debug)]
 struct Node {
     elem: i32,
     next: Link,
 }
+
+impl Drop for List {
+    fn drop(&mut self) {
+        /*
+        // NOTE: you can't actually explicitly call `drop` in real Rust code;
+        // we're pretending to be the compiler!
+        self.head.drop(); // tail recursive - good!
+        */
+
+        let mut cur_link = mem::take(&mut self.head);
+
+        while let Link::More(mut boxed_node) = cur_link {
+            cur_link = mem::take(&mut boxed_node.next);
+        }
+    }
+}
+
+/*
+impl Drop for Link {
+    fn drop(&mut self) {
+        match *self {
+            Link::Empty => {} // Done!
+            Link::More(ref mut boxed_node) => {
+                boxed_node.drop(); // tail recursive - good!
+            }
+        }
+    }
+}
+
+impl Drop for Box<Node> {
+    fn drop(&mut self) {
+        self.ptr.drop(); // uh oh, not tail recursive!
+        deallocate(self.ptr);
+    }
+}
+
+impl Drop for Node {
+    fn drop(&mut self) {
+        self.next.drop();
+    }
+}
+
+*/
 
 #[derive(Debug)]
 pub struct List {
@@ -49,7 +92,7 @@ impl List {
     pub fn peek(&self) -> Option<i32> {
         match &self.head {
             Link::Empty => None,
-            Link::More(item) => Some(item.elem)
+            Link::More(item) => Some(item.elem),
         }
     }
 

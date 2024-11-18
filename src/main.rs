@@ -1,18 +1,15 @@
-use first::List;
-
 pub mod first;
 pub mod second;
 pub mod weird_lists;
 
 fn main() {
     println!("lists-lists-lists!!!");
-    let mut list = List::new();
+    let mut first_list = first::List::new();
 
-    list.push(1);
-    list.push(2);
-    list.push(3);
-    list.push(4);
+    first_list.push(1);
+    first_list.push(2);
+    first_list.push(3);
+    first_list.push(4);
 
-
-    println!("{:#?}", list);
+    println!("{:#?}", first_list);
 }
