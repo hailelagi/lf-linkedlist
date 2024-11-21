@@ -16,7 +16,10 @@ type Link<T> = Option<Box<Node<T>>>;
 
 impl<T> List<T> {
     pub fn new() -> Self {
-        List { head: None, tail: ptr::null_mut() }
+        List {
+            head: None,
+            tail: ptr::null_mut(),
+        }
     }
 
     pub fn push(&mut self, elem: T) {
@@ -28,7 +31,9 @@ impl<T> List<T> {
         let raw_tail: *mut _ = &mut *new_tail;
 
         if !self.tail.is_null() {
-            unsafe { (*self.tail).next = Some(new_tail); }
+            unsafe {
+                (*self.tail).next = Some(new_tail);
+            }
         } else {
             self.head = Some(new_tail);
         }
@@ -49,7 +54,6 @@ impl<T> List<T> {
         })
     }
 }
-
 
 #[cfg(test)]
 mod test {
