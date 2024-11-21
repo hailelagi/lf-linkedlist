@@ -34,7 +34,7 @@ impl<T> Node<T> {
     }
 }
 
-/* 
+/*
 bad idea !!
 impl<'a, T> Iterator for Iter<'a, T> {
     type Item = Ref<'a, T>;
@@ -47,7 +47,6 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 */
-
 
 impl<T> Iterator for IntoIter<T> {
     type Item = T;
@@ -76,9 +75,11 @@ impl<T> List<T> {
         }
     }
 
+    /* do not do!
     pub fn iter(&self) -> Iter<T> {
         Iter(self.head.as_ref().map(|head| head.borrow()))
     }
+    */
 
     pub fn into_iter(self) -> IntoIter<T> {
         IntoIter(self)
