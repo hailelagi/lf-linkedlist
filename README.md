@@ -1,4 +1,5 @@
 # lf-linkedlist
 
-a (bad) lock-free linked list, derived from https://rust-unofficial.github.io/too-many-lists/ & https://marabos.nl/atomics/inspiration.html#lock-free-linked-list
-
+Learning about the acursed lock-free linked list, see:
+- https://rust-unofficial.github.io/too-many-lists/
+- https://marabos.nl/atomics/inspiration.html#lock-free-linked-list
